@@ -1,0 +1,76 @@
+import dht  # Importa biblioteca do sensor DHT22 (já vem no MicroPython)
+from machine import Pin, ADC, time_pulse_us #importa a classe Pin, que controla os pinos GPIO do ESP32, e o ADC para o pino Analogico
+import time 
+
+DHT = dht.DHT22(Pin(4)) # Cria o objeto do sensor, informando o modelo (DHT22) e o GPIO onde o fio de dados está ligado (GPIO 4).
+MQ135 = ADC(Pin(34)) #cria a variavel que recebe os dados analogicos da porta ADC pelo pin34
+MQ135.atten(ADC.ATTN_11DB)# Atenuação de 11 dB: amplia a faixa de tensão aceita para cerca de 0 a 3,3 V. Sem isso a faixa seria bem menor (cerca de 0 a 1 V). O ADC tem 12 bits de resolução: devolve valores de 0 a 4095.
+LDR = ADC(Pin(32))
+LDR.atten(ADC.ATTN_11DB)
+hcTRIG = Pin(21, Pin.OUT)
+hcECHO = Pin(19, Pin.IN)
+
+
+def calculoDistancia():
+    hcTRIG.value(0) # TRIG em 0 para começar limpo
+    time.sleep_us(2)
+    
+    # Envia o pulso de 10 microsegundos para acionar o sensor
+    hcTRIG.value(1)
+    time.sleep_us(10)
+    hcTRIG.value(0)
+    
+    # mede por quanto tempo  o ECHO fica em HIGH; desiste após 30000 
+    duracao = time_pulse_us(hcECHO, 1, 30000)
+    
+    # Se o sensor ultrapassar o tempo limite (sem obstáculo), retorna None
+    if duracao < 0:
+        return None
+        
+    # o som anda 0,0343 cm por microsegundos; divide por 2 porque o tempo é de ida e volta
+    distancia = (duracao * 0.0343) / 2
+    return distancia
+
+
+
+while True:
+  DHT.measure() #Inicializa o sensor
+  time.sleep(2)
+  print("DHT22 LIGADO - Recebendo dados\n")
+  temperaturaDHT = DHT.temperature()
+  umidadeDHT = DHT.humidity()
+  time.sleep(3)
+  print(f"DADOS DHT22: \nTemperatura: {temperaturaDHT}°C\nUmidade: {umidadeDHT}%\n")
+
+
+  time.sleep(2)
+  print("MQ135 LIGADO - Recebendo dados\n")
+  MQ135.read()
+  valorAr = MQ135.read()
+  time.sleep(3)
+  print(f"DADOS MQ135: \nQualidade do ar(Quanto maior valor, mais poluído): {valorAr} / 4095 \n")
+
+  time.sleep(2)
+  print("LDR LIGADO - Recebendo dados\n")
+  LDR.read()
+  intensidadeLuz = LDR.read()
+  time.sleep(3)
+  LIMITE_LUZ = 2000 #passou disso ta escuro
+  if intensidadeLuz > LIMITE_LUZ:
+      ambiente = "ESCURO"
+  else:
+      ambiente = "CLARO"
+
+  print(f"DADOS LDR: \nIntensidade da luz: {intensidadeLuz} / 4095 - Ambiente: {ambiente}\n")
+
+  time.sleep(2)
+  print("HC-SR04 LIGADO - Recebendo dados\n")
+  time.sleep(3)
+  distancia = calculoDistancia()
+  if distancia is not None:
+    print(f"Distância: {distancia:.2f} cm\n")
+  else:
+    print("Fora de alcance ou erro na medição\n")
+    time.sleep(1)
+        
+
