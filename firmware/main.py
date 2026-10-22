@@ -1,7 +1,18 @@
 import dht  # Importa biblioteca do sensor DHT22 (já vem no MicroPython)
 from machine import Pin, ADC, time_pulse_us, I2C #importa a classe Pin, que controla os pinos GPIO do ESP32, e o ADC para o pino Analogico
-import time 
+import time, network, urequests 
 #from bmp280 import BMP280 -> biblioteca pro BMP280
+
+#conexão a rede
+estacao = network.WLAN(network.STA_IF) #configura o wifi para modo de estação preparando para ligar em um router 
+estacao.active(True) 
+if not estacao.isconnected():
+    estacao.connect("Wokwi-GUEST", "")
+    print("Aguardando conexão...")
+    while not estacao.isconnected():
+        time.sleep(1)
+print(f"Conexão estabelecida: {estacao.ifconfig()[0]}")
+
 
 DHT = dht.DHT22(Pin(4)) # Cria o objeto do sensor, informando o modelo (DHT22) e o GPIO onde o fio de dados está ligado (GPIO 4).
 
@@ -75,7 +86,7 @@ while True:
   time.sleep(2)
   print("HC-SR04 LIGADO - Recebendo dados\n")
   time.sleep(3)
-  distancia = calculoDistancia()
+  distancia = calculoDistancia() or 0.0
   if distancia is not None:
     print(f"DADOS HC-SR04: \nDistância: {distancia:.2f} cm\n")
   else:
@@ -88,3 +99,19 @@ while True:
   # time.sleep(3)
   # pressao = bmp.pressure
   # print(f"DADOS BMP280: \nPressão Atmosférica: {pressao:.2f} hPa\n")
+  # #base JSON
+
+  #pacote JSON com os DADOS
+  dadosSensores = { 
+        "temperaturaDHT": temperaturaDHT,
+        "umidadeDHT": umidadeDHT,
+        "valorAr": valorAr,
+        "intensidadeLuz": intensidadeLuz,
+        "distancia": distancia,
+        "pressao": 1013.25 #Depois colocar a variavel quando tiver no sensor fisico
+    }
+
+#Eenvio dos dados pelo metodo POST DO HTTP
+  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores)
+  print(envioDados.text)
+  envioDados.close()    
