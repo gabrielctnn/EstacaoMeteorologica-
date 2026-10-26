@@ -73,15 +73,15 @@ while True:
   time.sleep(2)
   print("LDR LIGADO - Recebendo dados\n")
   LDR.read()
-  intensidadeLuz = LDR.read()
+  luminosidade = LDR.read()
   time.sleep(3)
   LIMITE_LUZ = 2000 #passou disso ta escuro
-  if intensidadeLuz > LIMITE_LUZ:
+  if luminosidade > LIMITE_LUZ:
       ambiente = "ESCURO"
   else:
       ambiente = "CLARO"
 
-  print(f"DADOS LDR: \nIntensidade da luz: {intensidadeLuz} / 4095 - Ambiente: {ambiente}\n")
+  print(f"DADOS LDR: \nIntensidade da luz: {luminosidade} / 4095 - Ambiente: {ambiente}\n")
 
   time.sleep(2)
   print("HC-SR04 LIGADO - Recebendo dados\n")
@@ -106,7 +106,7 @@ while True:
         "temperaturaDHT": temperaturaDHT,
         "umidadeDHT": umidadeDHT,
         "valorAr": valorAr,
-        "intensidadeLuz": intensidadeLuz,
+        "luminosidade": luminosidade,
         "distancia": distancia,
         "pressao": 1013.25 #Depois colocar a variavel quando tiver no sensor fisico
     }
