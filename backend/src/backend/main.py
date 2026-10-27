@@ -2,10 +2,11 @@ from fastapi import FastAPI, Depends#importando o framework
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from models import LeituraSensorModel
+from database import get_db, engine, Base
 
 
 app = FastAPI() #INSTÂNCIA DO SERVIDOR: Cria a aplicação base da nossa API.
-
+Base.metadata.create_all(bind=engine) #instrução que obriga o SQLAlchemy a criar fisicamente as tabelas dentro do teu banco de dados.
 
 class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 enviar, e com o basemodel tipando
       #Field permite embutir regras matematicas diretamente na classe. ge = maior ou igual a;le=menor ou igual a
@@ -42,4 +43,4 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
         db.refresh(novo_registro)
 
 
-        return {"Mensagem": "Dados guardados com sucesso!", "dados": novo_registo }
+        return {"Mensagem": "Dados guardados com sucesso!", "dados": novo_registro }
