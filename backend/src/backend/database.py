@@ -13,7 +13,7 @@ connect_args = {"check_same_thread": False} if "sqlite" in url_banco else {}
 engine = create_engine(url_banco, connect_args=connect_args) #cria o nosso  
 
 
-# SessionLocal (Sessão): A fábrica que abre e fecha conexões temporárias
+# SessionLocal (Sessão): Abre e fecha conexões temporárias
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Dependência para injetar a sessão nas rotas do FastAPI

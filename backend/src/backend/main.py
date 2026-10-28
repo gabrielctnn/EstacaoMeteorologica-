@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends#importando o framework 
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from models import LeituraSensorModel
@@ -44,3 +44,8 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
 
 
         return {"Mensagem": "Dados guardados com sucesso!", "dados": novo_registro }
+
+@app.get("/sensors") #endpoint criado para pegar os dados do db e mandar para o front
+async def dataSend (db: Session = Depends(get_db)):
+    envioFront = db.query(LeituraSensorModel).all() #busca as informações na sessão atual do db, no alvo LeituraSensorModel
+    return {"Dados enviados com sucesso:": envioFront}
