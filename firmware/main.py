@@ -7,7 +7,7 @@ import time, network, urequests
 estacao = network.WLAN(network.STA_IF) #configura o wifi para modo de estação preparando para ligar em um router 
 estacao.active(True) 
 if not estacao.isconnected():
-    estacao.connect("Wokwi-GUEST", "")
+    estacao.connect("Wokwi-GUEST", "") #trocar isso pelo wifi e as aspas vazia pela senha
     print("Aguardando conexão...")
     while not estacao.isconnected():
         time.sleep(1)
@@ -112,6 +112,6 @@ while True:
     }
 
 #Eenvio dos dados pelo metodo POST DO HTTP
-  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores)
+  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores) #colocar ip do meu notebook
   print(envioDados.text)
   envioDados.close()    
