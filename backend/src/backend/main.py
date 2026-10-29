@@ -3,10 +3,18 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from models import LeituraSensorModel
 from database import get_db, engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI() #INSTÂNCIA DO SERVIDOR: Cria a aplicação base da nossa API.
 Base.metadata.create_all(bind=engine) #instrução que obriga o SQLAlchemy a criar fisicamente as tabelas dentro do teu banco de dados.
+app.add_middleware(
+      CORSMiddleware,
+      allow_origins=["*"],
+      allow_credentials=True,
+      allow_methods=["*"],
+      allow_headers=["*"]
+)
 
 class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 enviar, e com o basemodel tipando
       #Field permite embutir regras matematicas diretamente na classe. ge = maior ou igual a;le=menor ou igual a
