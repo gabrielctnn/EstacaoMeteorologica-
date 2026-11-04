@@ -112,6 +112,6 @@ while True:
     }
 
 #Eenvio dos dados pelo metodo POST DO HTTP
-  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores) #colocar ip do meu notebook
+  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores) #colocar ip do meu notebook    
   print(envioDados.text)
   envioDados.close()    

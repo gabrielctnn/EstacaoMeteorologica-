@@ -1,14 +1,12 @@
-from sqlalchemy import Column, Float, Integer, DateTime
+from sqlalchemy import Column, Float, Integer, DateTime, ForeignKey
 from datetime import datetime
 from database import Base
 
 class LeituraSensorModel(Base):
     # O __tablename__  é o nome exato da tabela no MySQL
     __tablename__ = "leituras_sensores"  # (Substitua pelo nome exato do BANCO)
-
     
-    # Cada coluna aqui precisa corresponder exatamente ao BANCO, trocar pelo nomes exatos das colunas
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    dispositivo_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     temperatura = Column(Float, nullable=False)
     umidade = Column(Float, nullable=False)
     valorAr = Column(Integer, nullable=False)

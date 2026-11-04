@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI() #INSTÂNCIA DO SERVIDOR: Cria a aplicação base da nossa API.
-Base.metadata.create_all(bind=engine) #instrução que obriga o SQLAlchemy a criar fisicamente as tabelas dentro do teu banco de dados.
 app.add_middleware(
       CORSMiddleware,
       allow_origins=["*"],
@@ -18,6 +17,7 @@ app.add_middleware(
 
 class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 enviar, e com o basemodel tipando
       #Field permite embutir regras matematicas diretamente na classe. ge = maior ou igual a;le=menor ou igual a
+      dispositivo_id: int
       temperaturaDHT: float = Field(ge=-40.0, le=100.0, description="°C")
       umidadeDHT: float = Field(ge=0.0, le=100.0, description="%")
       valorAr: int = Field(ge=0, le=4095, description="Valor bruto ADC (0-4095)")
@@ -35,6 +35,7 @@ async def root():
 async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cria a sessão para abrir  armazenar os dados e fechar
         #Cria o registro usando o modelo do banco e os dados validados pelo SensorsData
         novo_registro = LeituraSensorModel(
+            dispositivo_id=data.dispositivo_id,
             temperatura=data.temperaturaDHT,
             umidade=data.umidadeDHT,
             valorAr=data.valorAr,
