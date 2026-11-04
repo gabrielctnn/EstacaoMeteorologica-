@@ -7,7 +7,7 @@ import time, network, urequests
 estacao = network.WLAN(network.STA_IF) #configura o wifi para modo de estação preparando para ligar em um router 
 estacao.active(True) 
 if not estacao.isconnected():
-    estacao.connect("Wokwi-GUEST", "") #trocar isso pelo wifi e as aspas vazia pela senha
+    estacao.connect("Wokwi-GUEST", "") #trocar isso pelo wifi e as aspas vazia pela senha quando tiver o esquema montado
     print("Aguardando conexão...")
     while not estacao.isconnected():
         time.sleep(1)
@@ -103,6 +103,7 @@ while True:
 
   #pacote JSON com os DADOS
   dadosSensores = { 
+        "dispositvo_id": 1,
         "temperaturaDHT": temperaturaDHT,
         "umidadeDHT": umidadeDHT,
         "valorAr": valorAr,
@@ -111,7 +112,10 @@ while True:
         "pressao": 1013.25 #Depois colocar a variavel quando tiver no sensor fisico
     }
 
-#Eenvio dos dados pelo metodo POST DO HTTP
-  envioDados = urequests.post("https://179.228.212.64:8000/sensors", json=dadosSensores) #colocar ip do meu notebook    
+#Try/catch para envio dos dados pelo metodo POST DO HTTP
+try:
+  envioDados = urequests.post("http://179.228.212.64:8000/sensors", json=dadosSensores) #colocar ip do meu notebook    
   print(envioDados.text)
-  envioDados.close()    
+  envioDados.close() 
+except Exception as e:
+   print("Erro ao enviar os dados para a API:", e)
