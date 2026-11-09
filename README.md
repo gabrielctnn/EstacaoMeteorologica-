@@ -1,21 +1,25 @@
 # 🌤️ Estação Meteorológica Inteligente com ESP32
 
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge)
-![MicroPython](https://img.shields.io/badge/MicroPython-1.20+-blue?style=for-the-badge&logo=python)
-![ESP32](https://img.shields.io/badge/Hardware-ESP32-black?style=for-the-badge&logo=espressif)
+[![MicroPython](https://img.shields.io/badge/MicroPython-1.20%252B-blue.svg)]()
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-%23009688.svg)]()
+[![Hardware](https://img.shields.io/badge/HARDWARE-ESP32-orange.svg)]()
 
-Um projeto acadêmico de monitoramento ambiental construído com **ESP32** e **MicroPython**. Desenvolvido como parte das atividades práticas do 2º semestre do curso de Ciência da Computação (UNIP), esta estação meteorológica coleta dados em tempo real sobre temperatura, umidade, qualidade do ar e luminosidade, além de possuir um sensor ultrassônico voltado para pluviometria. 
-
-O projeto está estruturado em um ecossistema monorepo, preparado para evoluir e suportar uma futura integração com banco de dados e dashboard web.
+Projeto acadêmico de monitoramento ambiental de ponta a ponta construído com **ESP32** e **MicroPython**. Desenvolvido como parte das atividades práticas do curso de Ciência da Computação (UNIP), esta estação realiza a coleta contínua de dados ambientais em tempo real, validando-os através de um backend robusto, persistindo as informações em banco de dados e disponibilizando-as em um dashboard web interativo.
 
 ---
 
-## 🚀 Funcionalidades Atuais (Firmware)
+## 🔄 Fluxo de Funcionamento
 
-- **Clima:** Leitura de temperatura e umidade relativa do ar.
-- **Qualidade do Ar:** Medição analógica da concentração de gases e poluição.
-- **Luminosidade:** Identificação de ambiente claro ou escuro com base em limites de intensidade da luz.
-- **Pluviometria:** Medição do nível de água via ultrassom para estimativa de volume de chuva.
+O sistema opera de forma integrada através das seguintes etapas:
+
+1. **Coleta no Firmware:** O **ESP32** executa scripts em **MicroPython** capturando os dados brutos de todos os sensores conectados:
+   - **DHT22:** Realiza a leitura de temperatura e umidade relativa do ar.
+   - **MQ135:** Captura a medição analógica da concentração de gases e poluição no ar.
+   - **LDR:** Identifica o nível de luminosidade para classificar o ambiente entre claro ou escuro.
+   - **HC-SR04:** Executa a medição do nível de água via ultrassom para a estimativa de volume de chuva (pluviometria).
+2. **Validação e Processamento (Backend):** Os dados coletados pelo firmware são transmitidos via rede para a API em **FastAPI**, que recebe o payload, executa as validações de integridade e regra de negócio.
+3. **Persistência:** O backend processa as informações e utiliza o **SQLAlchemy ORM** para salvar o histórico completo das métricas coletadas no banco de dados relacional.
+4. **Visualização (Frontend):** Os dados persistidos são consumidos e exibidos em tempo real no dashboard web, permitindo o acompanhamento gráfico e visual do monitoramento ambiental.
 
 ---
 
@@ -23,24 +27,25 @@ O projeto está estruturado em um ecossistema monorepo, preparado para evoluir e
 
 A prototipagem física e simulada (via Wokwi) utiliza os seguintes componentes principais:
 
-| Componente | Função |
-| :--- | :--- |
-| **ESP32** | Microcontrolador central |
-| **DHT22** | Temperatura e Umidade |
-| **MQ135** | Qualidade do Ar (Gás) |
-| **LDR** | Luminosidade |
-| **HC-SR04** | Ultrassônico para Pluviometria |
+| Componente | Função | Pino/Interface |
+| :--- | :--- | :--- |
+| **ESP32** | Microcontrolador central com Wi-Fi/BLE | Core do Sistema |
+| **DHT22** | Temperatura e Umidade do Ar | Digital / GPIO |
+| **MQ135** | Qualidade do Ar (Gases) | Entrada Analógica (ADC) |
+| **LDR** | Luminosidade | Entrada Analógica (ADC) |
+| **HC-SR04** | Ultrassônico para Pluviometria | Trigger / Echo (GPIO) |
 
 ---
 
-## 📂 Arquitetura do Repositório
+## 📁 Arquitetura do Repositório
 
-O projeto adota uma estrutura monorepo para concentrar todo o ecossistema (IoT, backend e frontend) num único local.
+O projeto adota uma estrutura **monorepo** organizada para desacoplar as camadas de hardware, lógica de servidores, interface do usuário e documentação:
 
 ```text
 estacao-meteorologica/
-├── firmware/            # Código do ESP32 (main.py) e circuito (diagram.json)
-├── backend/             # [Futuro] API e lógica de base de dados
-├── frontend/            # [Futuro] Dashboard web para visualização de dados
-├── docs/                # Documentação técnica e relatórios do projeto
-└── README.md            # Documentação central do repositório
+├── firmware/       # Códigos em MicroPython para o ESP32 (main.py) e simulação (diagram.json)
+├── backend/        # API desenvolvida em FastAPI, rotas, modelos e integração via SQLAlchemy
+├── frontend/       # Dashboard web para visualização em tempo real das métricas ambientais
+├── docs/           # Documentação técnica, diagramas e relatórios do projeto acadêmico
+└── README.md       # Documentação central e guia do repositório
+```
