@@ -1,43 +1,128 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estacao Metereologica</title>
-    <script src="script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estação Meteorológica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1> Teste Recebimento Dados Estação Metereológica</h1>
+<main class="page">
 
-    <h2> Sensores</h2>
-    <p> Última atualização em: </p>
-    <section>   
-        <p>Luminosidade:</p>
-        <span id="textLuminosidade">0.0</span>
-    </section>
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div>
+      <h1>Estação Meteorológica</h1>
+      <p>Histórico das leituras dos sensores</p>
+    </div>
+    <div class="header-actions">
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>Online · última leitura agora</span>
+      </div>
+      <button class="btn-refresh" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F1720" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 4 21 10 15 10"/>
+        </svg>
+        Atualizar dados
+      </button>
+    </div>
+  </header>
 
-    <section>   
-        <p>Temperatura:</p>
-        <span id="textTemperatura">0.0</span>
-    </section>
+  <!-- Cards estáticos (substituem o container gerado por JS) -->
+  <section class="cards" aria-label="Leituras atuais">
+    <!-- Temperatura -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-temp">TEMPERATURA</span><span class="card-sensor">DHT22</span></div>
+      <span class="card-value">24,6<span class="card-unit"> °C</span></span>
+      <span class="card-trend">Ar ambiente</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
 
-    <section>
-        <p> Umidade:</p>
-        <span id="textUmidade">0.0</span>
-    </section>
-  
-    <section>
-        <p>Pressao:</p>
-        <span id="textPressao">0.0</span>
-    </section>
+    <!-- Umidade -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-umid">UMIDADE</span><span class="card-sensor">DHT22</span></div>
+      <span class="card-value">62<span class="card-unit"> %</span></span>
+      <span class="card-trend">Umidade relativa do ar</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
 
-    <section>
-        <p>Valor Ar: </p>
-        <span id="textValorAr">0.0</span>
-    </section>
+    <!-- Pressão -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-press">PRESSÃO</span><span class="card-sensor">BMP280</span></div>
+      <span class="card-value">1.013<span class="card-unit"> hPa</span></span>
+      <span class="card-trend">Pressão atmosférica</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
 
-    
-    <button onclick="puxarDados()"> ATUALIZAR DADOS</button>
- 
+    <!-- Luminosidade -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-luz">LUMINOSIDADE</span><span class="card-sensor">LDR</span></div>
+      <span class="card-value">79<span class="card-unit"> %</span></span>
+      <span class="card-trend">Claro</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
+
+    <!-- Qualidade do Ar -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-ar">QUALIDADE DO AR</span><span class="card-sensor">MQ135</span></div>
+      <span class="card-value txt">Boa</span>
+      <span class="card-trend">Índice estimado</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
+
+    <!-- Chuva -->
+    <article class="card">
+      <div class="card-head"><span class="card-label c-chuva">CHUVA</span><span class="card-sensor">HC-SR04</span></div>
+      <span class="card-value">2,4<span class="card-unit"> mm</span></span>
+      <span class="card-trend">Chuva acumulada</span>
+      <span class="pill ligado"><i></i>Ligado</span>
+    </article>
+  </section>
+
+  <!-- Resumo do ambiente estático + mapa -->
+  <section class="row-2 row-detail">
+    <div class="panel">
+      <div class="panel-head"><h2>Como está o ambiente agora</h2></div>
+      <div class="verdict ok"><span class="verdict-dot"></span><div><strong>Está ok para sair de casa</strong><p>Sem chuva, com temperatura e ar dentro do normal.</p></div></div>
+      <ul class="fatores">
+        <li><span class="f-nome">Temperatura</span><span class="f-valor">24,7 °C</span><span class="f-texto ok"><i></i>Agradável</span></li>
+        <li><span class="f-nome">Umidade</span><span class="f-valor">62 %</span><span class="f-texto ok"><i></i>Confortável</span></li>
+        <li><span class="f-nome">Qualidade do ar</span><span class="f-valor">Boa</span><span class="f-texto ok"><i></i>Boa</span></li>
+        <li><span class="f-nome">Chuva</span><span class="f-valor">2,4 mm</span><span class="f-texto ok"><i></i>Sem chuva agora</span></li>
+        <li><span class="f-nome">Luminosidade</span><span class="f-valor">79 %</span><span class="f-texto ok"><i></i>Claro</span></li>
+        <li><span class="f-nome">Pressão</span><span class="f-valor">1.013,1 hPa</span><span class="f-texto ok"><i></i>Normal</span></li>
+      </ul>
+      <p class="footnote">Avaliação automática com limites de exemplo. Não substitui previsão nem alerta oficial da Defesa Civil.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Localização atual do sensor</h2></div>
+      <svg class="map" viewBox="0 0 640 200" role="img" aria-label="Mapa ilustrativo com o marcador da posição atual do sensor">
+        <rect width="640" height="200" fill="#1E2B38"/>
+        <g aria-hidden="true" fill="none" stroke="#33475A" stroke-width="7" stroke-linecap="round">
+          <line x1="0" y1="60" x2="640" y2="60"/><line x1="0" y1="150" x2="640" y2="150"/>
+          <line x1="150" y1="0" x2="150" y2="200"/><line x1="470" y1="0" x2="470" y2="200"/>
+          <line x1="0" y1="195" x2="330" y2="20"/>
+        </g>
+        <rect x="170" y="72" width="90" height="66" rx="6" fill="#24473A" aria-hidden="true"/>
+        <polyline aria-hidden="true" fill="none" stroke="#2F6C94" stroke-width="10" stroke-linecap="round" points="490,200 520,150 590,120 640,70"/>
+        <circle cx="320" cy="100" r="30" fill="#F2A65A" fill-opacity="0.22" aria-hidden="true"/>
+        <path d="M320 122 C308 106 303 98 303 90 a17 17 0 1 1 34 0 c0 8 -5 16 -17 32z" fill="#F2A65A" stroke="#0F1720" stroke-width="2.5"/>
+        <circle cx="320" cy="90" r="6" fill="#0F1720"/>
+      </svg>
+      <div class="map-foot">
+        <span>Coordenadas: <span>-23.5118, -46.8763</span></span>
+        <span>Mapa ilustrativo</span>
+      </div>
+    </div>
+  </section>
+
+  <p class="footnote">Valores simulados. Qualidade do ar é um índice estimado pelo MQ135, sem calibração. Luminosidade é um nível relativo do LDR, não lux. Chuva é calculada a partir da distância medida pelo HC-SR04.</p>
+
+</main>
+
 </body>
 </html>

@@ -18,11 +18,11 @@ app.add_middleware(
 class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 enviar, e com o basemodel tipando
       #Field permite embutir regras matematicas diretamente na classe. ge = maior ou igual a;le=menor ou igual a
       dispositivo_id: int
-      temperaturaDHT: float = Field(ge=-40.0, le=100.0, description="°C")
-      umidadeDHT: float = Field(ge=0.0, le=100.0, description="%")
+      temperaturaDHT: float | None = Field(ge=-40.0, le=100.0, description="°C")
+      umidadeDHT: float | None = Field(ge=0.0, le=100.0, description="%")
       valorAr: int = Field(ge=0, le=4095, description="Valor bruto ADC (0-4095)")
       luminosidade: int = Field(ge=0, le=4095, description="Valor bruto ADC (0-4095)")
-      distancia: float = Field(ge=0.0, description="cm")
+      precipitacao: float = Field(ge=0.0, description="mm")
       pressao: float = Field(ge=300.0, le=1100.0, description="hPa")
 
 
@@ -31,7 +31,7 @@ async def root():
     return {"message": "Hello World"} #basicamente diz q que quando bater na raiz do proejto devolver isso
 
 
-@app.post("/sensors") #Endpoint criado para receber/escrever no endereço sensors
+@app.post("/sensors") #Endpoint com metodo POST criado para receber/escrever no endereço sensors
 async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cria a sessão para abrir  armazenar os dados e fechar
         #Cria o registro usando o modelo do banco e os dados validados pelo SensorsData
         novo_registro = LeituraSensorModel(
@@ -40,7 +40,7 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
             umidade=data.umidadeDHT,
             valorAr=data.valorAr,
             luminosidade=data.luminosidade,
-            distancia=data.distancia,
+            precipitacao=data.precipitacao,
             pressao=data.pressao
         )   
 
@@ -54,7 +54,7 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
 
         return {"Mensagem": "Dados guardados com sucesso!", "dados": novo_registro }
 
-@app.get("/sensors") #endpoint criado para pegar os dados do db e mandar para o front
+@app.get("/sensors") #endpoint metodo GET criado para pegar os dados do db e mandar para o front
 async def dataSend (db: Session = Depends(get_db)):
     envioFront = db.query(LeituraSensorModel).all() #busca as informações na sessão atual do db, no alvo LeituraSensorModel
     return {"Dados enviados com sucesso:": envioFront}

@@ -16,11 +16,11 @@ CREATE TABLE IF NOT EXISTS dispositivos (
 CREATE TABLE IF NOT EXISTS leituras_sensores (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     dispositivo_id INT UNSIGNED NOT NULL,
-    temperatura DECIMAL(5,2) NOT NULL ,
-    umidade DECIMAL(5,2) NOT NULL,
+    temperatura DECIMAL(5,2) ,
+    umidade DECIMAL(5,2),
     valorAr INT NOT NULL,
 	luminosidade INT NOT NULL,
-    distancia DECIMAL(6,2) NOT NULL,
+    precipitacao DECIMAL(6,2) NOT NULL,
     pressao DECIMAL(7,2) NOT NULL,
     criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
