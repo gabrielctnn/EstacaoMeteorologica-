@@ -169,6 +169,12 @@
     font-weight: 700; 
     letter-spacing: -1px; 
   }
+
+   .card-valorSensorTxt2{ 
+    font-size: 16px; 
+    color: var(--textoSecundario); 
+  }
+  
   
   .card-unidadeMedida  { 
     font-size: 25px; 
