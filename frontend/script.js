@@ -9,6 +9,7 @@ async function puxarDados(){
     document.getElementById("textUmidade").innerText = leitura.umidade
     document.getElementById("textPressao").innerText = leitura.pressao
     document.getElementById("textValorAr").innerText = leitura.valorAr
+    document.getElementById("textPrecipitacao").innerText = leitura.precipitacao
 
     console.log(leitura)
 }

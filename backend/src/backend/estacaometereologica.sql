@@ -19,10 +19,12 @@ CREATE TABLE IF NOT EXISTS leituras_sensores (
     temperatura DECIMAL(5,2) ,
     umidade DECIMAL(5,2),
     valorAr INT NOT NULL,
+    qualidadeArStatus VARCHAR(50) NOT NULL,
 	luminosidade INT NOT NULL,
     precipitacao DECIMAL(6,2) NOT NULL,
     pressao DECIMAL(7,2) NOT NULL,
     criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
 
     CONSTRAINT fk_leitura_dispositivo
       FOREIGN KEY (dispositivo_id)

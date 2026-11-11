@@ -25,7 +25,17 @@ class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 
       precipitacao: float = Field(ge=0.0, description="mm")
       pressao: float = Field(ge=300.0, le=1100.0, description="hPa")
 
-
+# Função normal Python (sem @property)
+def classificar_qualidadeAr(valorAr: int) -> str:
+    if valorAr <= 1200:
+        return "BOM / Limpo"
+    elif valorAr <= 2200:
+        return "MODERADO / Aceitável"
+    elif valorAr <= 3200:
+        return "POLUÍDO / Cuidado"
+    else:
+        return "PÉSSIMO / Perigoso"
+    
 @app.get("/") #cria a rota(ENDPOINT)  da porta do servidor, get pois esta solicitando as info, "/" indica raiz do projeto
 async def root():
     return {"message": "Hello World"} #basicamente diz q que quando bater na raiz do proejto devolver isso
@@ -39,6 +49,7 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
             temperatura=data.temperaturaDHT,
             umidade=data.umidadeDHT,
             valorAr=data.valorAr,
+            qualidadeArStatus=classificar_qualidadeAr(data.valorAr),
             luminosidade=data.luminosidade,
             precipitacao=data.precipitacao,
             pressao=data.pressao
@@ -52,9 +63,23 @@ async def dataReceive (data: SensorsData, db: Session = Depends(get_db)): #db cr
         db.refresh(novo_registro)
 
 
-        return {"Mensagem": "Dados guardados com sucesso!", "dados": novo_registro }
+        # Faz a inclusão do texto para Valor Ar Visualmente mais facil
+        resposta = {
+            "id": novo_registro.id,
+            "dispositivo_id": novo_registro.dispositivo_id,
+            "temperatura": novo_registro.temperatura,
+            "umidade": novo_registro.umidade,
+            "valorAr": novo_registro.valorAr,
+            "qualidadeArStatus": classificar_qualidadeAr(novo_registro.valorAr),
+            "luminosidade": novo_registro.luminosidade,
+            "precipitacao": novo_registro.precipitacao,
+            "pressao": novo_registro.pressao
+        }
+
+        return {"Mensagem": "Dados guardados com sucesso!", "dados": resposta }
 
 @app.get("/sensors") #endpoint metodo GET criado para pegar os dados do db e mandar para o front
 async def dataSend (db: Session = Depends(get_db)):
     envioFront = db.query(LeituraSensorModel).all() #busca as informações na sessão atual do db, no alvo LeituraSensorModel
     return {"Dados enviados com sucesso:": envioFront}
+

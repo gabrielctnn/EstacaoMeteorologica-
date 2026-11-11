@@ -40,22 +40,7 @@
       "id": "ultrasonic1",
       "top": 20.7,
       "left": 466.3,
-      "attrs": { "distance": "184" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r2",
-      "top": 109.85,
-      "left": 584.2,
-      "rotate": 180,
-      "attrs": { "value": "1000" }
-    },
-    {
-      "type": "wokwi-resistor",
-      "id": "r3",
-      "top": 119.15,
-      "left": 662.4,
-      "attrs": { "value": "2000" }
+      "attrs": { "distance": "2" }
     }
   ],
   "connections": [
@@ -93,38 +78,36 @@
     [ "ldr1:AO", "esp:D32", "purple", [ "v-9.6", "h-18.5", "v-172.8", "h-345.6", "v124.8" ] ],
     [ "ultrasonic1:VCC", "bb1:bp.24", "red", [ "v57.6", "h-19.2" ] ],
     [ "ultrasonic1:GND", "bb1:bn.27", "cyan", [ "v0" ] ],
-    [ "ultrasonic1:ECHO", "r2:2", "magenta", [ "v0" ] ],
-    [ "r3:2", "bb1:bn.39", "blue", [ "v38.4", "h-20.4" ] ],
-    [ "r3:1", "bb1:43b.g", "magenta", [ "v0" ] ],
-    [ "r2:1", "bb1:43b.f", "magenta", [ "v0" ] ],
-    [ "esp:D19", "bb1:43b.h", "purple", [ "h38.1", "v-115.3", "h451.2" ] ],
+    [
+      "ultrasonic1:TRIG",
+      "esp:D18",
+      "purple",
+      [ "v-9.6", "h95.6", "v-163.2", "h-422.4", "v19.2" ]
+    ],
     [ "dht1:VCC", "bb1:1b.f", "", [ "$bb" ] ],
     [ "dht1:SDA", "bb1:2b.f", "", [ "$bb" ] ],
     [ "dht1:NC", "bb1:3b.f", "", [ "$bb" ] ],
     [ "dht1:GND", "bb1:4b.f", "", [ "$bb" ] ],
     [ "r1:1", "bb1:1b.i", "", [ "$bb" ] ],
     [ "r1:2", "bb1:7b.i", "", [ "$bb" ] ],
-    [ "ldr1:VCC", "bb1:21b.f", "", [ "$bb" ] ],
-    [ "ldr1:GND", "bb1:20b.f", "", [ "$bb" ] ],
-    [ "ldr1:DO", "bb1:19b.f", "", [ "$bb" ] ],
-    [ "ldr1:AO", "bb1:18b.f", "", [ "$bb" ] ],
     [ "gas1:AOUT", "bb1:13b.f", "", [ "$bb" ] ],
     [ "gas1:DOUT", "bb1:12b.f", "", [ "$bb" ] ],
     [ "gas1:GND", "bb1:11b.f", "", [ "$bb" ] ],
     [ "gas1:VCC", "bb1:10b.f", "", [ "$bb" ] ],
+    [ "ldr1:VCC", "bb1:21b.f", "", [ "$bb" ] ],
+    [ "ldr1:GND", "bb1:20b.f", "", [ "$bb" ] ],
+    [ "ldr1:DO", "bb1:19b.f", "", [ "$bb" ] ],
+    [ "ldr1:AO", "bb1:18b.f", "", [ "$bb" ] ],
     [ "ultrasonic1:VCC", "bb1:31b.f", "", [ "$bb" ] ],
     [ "ultrasonic1:TRIG", "bb1:32b.f", "", [ "$bb" ] ],
     [ "ultrasonic1:ECHO", "bb1:33b.f", "", [ "$bb" ] ],
     [ "ultrasonic1:GND", "bb1:34b.f", "", [ "$bb" ] ],
-    [ "r2:1", "bb1:42b.f", "", [ "$bb" ] ],
-    [ "r2:2", "bb1:36b.f", "", [ "$bb" ] ],
-    [ "r3:1", "bb1:44b.g", "", [ "$bb" ] ],
-    [ "r3:2", "bb1:50b.g", "", [ "$bb" ] ],
+    [ "bb1:43b.h", "bb1:43b.g", "green", [ "v0" ] ],
     [
-      "ultrasonic1:TRIG",
-      "esp:D21",
+      "ultrasonic1:ECHO",
+      "esp:D19",
       "purple",
-      [ "v-9.6", "h95.6", "v-163.2", "h-460.8", "v115.2" ]
+      [ "v-9.6", "h104.8", "v-144", "h-470.4", "v105.6" ]
     ]
   ],
   "dependencies": {}

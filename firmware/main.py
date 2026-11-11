@@ -3,21 +3,23 @@ from machine import Pin, ADC, time_pulse_us, I2C #importa a classe Pin, que cont
 import time, network, urequests 
 #from bmp280 import BMP280 -> biblioteca pro BMP280
 
-#conexão a rede
 estacao = network.WLAN(network.STA_IF) #configura o wifi para modo de estação preparando para ligar em um router 
-estacao.active(True) 
-if not estacao.isconnected():
-    estacao.connect("Wokwi-GUEST", "") #trocar isso pelo wifi e as aspas vazia pela senha quando tiver o esquema montado
-    print("Aguardando conexão...")
-    tentativas = 0
-    while not estacao.isconnected() and tentativas < 20:
-        time.sleep(1)
-        tentativas+=1
+estacao.active(True)
 
-if estacao.isconnected():
-    print(f"Conexão estabelecida: {estacao.ifconfig()[0]}")
-else :
-    print("Falha ao conectar a placa ao WIFI!")
+#conexão a rede
+def conexaoRede():
+    if not estacao.isconnected():
+        estacao.connect("Wokwi-GUEST", "") #trocar isso pelo wifi e as aspas vazia pela senha quando tiver o esquema montado
+        print("Aguardando conexão...")
+        tentativas = 0
+        while not estacao.isconnected() and tentativas < 20:
+            time.sleep(1)
+            tentativas+=1
+
+    if estacao.isconnected():
+        print(f"Conexão estabelecida: {estacao.ifconfig()[0]}")
+    else :
+        print("Falha ao conectar a placa ao WIFI!")
 
 
 DHT = dht.DHT22(Pin(4)) # Cria o objeto do sensor, informando o modelo (DHT22) e o GPIO onde o fio de dados está ligado (TROCAR PARA A IGUAL DO FISICO).
@@ -59,7 +61,7 @@ def calculoDistancia():
     return distancia
 
 
-
+conexaoRede()
 while True:
   try:
     DHT.measure() #Inicializa o sensor
@@ -73,6 +75,7 @@ while True:
 
 
   valorAr = MQ135.read()
+  
   print(f"DADOS MQ135: \nQualidade do ar(Quanto maior valor, mais poluído): {valorAr} / 4095 \n")
 
 
@@ -91,7 +94,7 @@ while True:
     #A diferença é a altura da agua no recipiente que esta em CM
     nivelChuva = alturaRecipiente - distancia
 
-    if nivelChuva <0: 
+    if nivelChuva < 0: 
         nivelChuva = 0.0
 
     nivelChuva *= 10 #Converte para mm
@@ -117,12 +120,15 @@ while True:
         "pressao": 1013.25 #Depois colocar a variavel quando tiver no sensor fisico
   }
     #Try/catch para envio dos dados pelo metodo POST DO HTTP
-  try:
+  if not estacao.isconnected():
+      conexaoRede()
+  else:
+    try:
         envioDados = urequests.post("http://192.168.15.105:8000/sensors", json=dadosSensores,
         timeout=10)
         print(envioDados.text)
         envioDados.close() 
-  except Exception as e:
+    except Exception as e:
         print("Erro ao enviar os dados para a API:", e)
 
-  time.sleep(10)
+    time.sleep(10)
