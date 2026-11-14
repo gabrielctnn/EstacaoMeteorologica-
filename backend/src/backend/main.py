@@ -6,6 +6,7 @@ from database import get_db, engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 
 
+
 app = FastAPI() #INSTÂNCIA DO SERVIDOR: Cria a aplicação base da nossa API.
 app.add_middleware(
       CORSMiddleware,
@@ -18,12 +19,12 @@ app.add_middleware(
 class SensorsData(BaseModel): #classe que armazenará o pacote JSON que o ESP32 enviar, e com o basemodel tipando
       #Field permite embutir regras matematicas diretamente na classe. ge = maior ou igual a;le=menor ou igual a
       dispositivo_id: int
-      temperaturaDHT: float | None = Field(ge=-40.0, le=100.0, description="°C")
-      umidadeDHT: float | None = Field(ge=0.0, le=100.0, description="%")
+      temperaturaDHT: float | None = Field(default=None, ge=-40.0, le=100.0, description="°C")
+      umidadeDHT: float | None = Field(default=None, ge=0.0, le=100.0, description="%")
       valorAr: int = Field(ge=0, le=4095, description="Valor bruto ADC (0-4095)")
       luminosidade: int = Field(ge=0, le=4095, description="Valor bruto ADC (0-4095)")
-      precipitacao: float = Field(ge=0.0, description="mm")
-      pressao: float = Field(ge=300.0, le=1100.0, description="hPa")
+      precipitacao: float | None = Field(default=None, ge=0.0, description="mm")
+      pressao: float | None = Field(default=None, ge=300.0, le=1100.0, description="hPa")
 
 # Função normal Python (sem @property)
 def classificar_qualidadeAr(valorAr: int) -> str:

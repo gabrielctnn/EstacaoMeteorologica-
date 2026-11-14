@@ -52,7 +52,7 @@
       </div>
       </span>
       <span class="card-descricao">Temperatura do clima atual</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+      <span class="bolinha-status ligado" id="status-temperatura"><i></i>Ligado</span>
     </article>
 
     <!-- Pressão -->
@@ -67,7 +67,7 @@
         </div>
       </span>
       <span class="card-descricao">Pressão atmosférica</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+      <span class="bolinha-status ligado" id="status-pressao"><i></i>Ligado</span>
     </article>
 
     <!-- Umidade -->
@@ -82,7 +82,7 @@
       </div>
       </span>
       <span class="card-descricao">Umidade relativa do ar</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+      <span class="bolinha-status ligado" id="status-umidade"><i></i>Ligado</span>
     </article>
 
     <!-- Luminosidade -->
@@ -93,12 +93,12 @@
       </div>
       <div> 
         <span class="card-valorSensor" id="textLuminosidade">0.0 </span> 
-        <span class="card-valorSensorTxt2"> lx</span>
+        <span class="card-valorSensorTxt2"> ADC</span>
       </div>
        
       </span>
       <span class="card-descricao">Claro</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+      <span class="bolinha-status ligado" id="status-luminosidade"><i></i>Ligado</span>
     </article>
 
     <!-- Qualidade do Ar -->
@@ -108,11 +108,11 @@
         <span class="card-nomeSensor">MQ135</span>
       </div>
       <div>  
-        <span class="card-valorSensor" id="textValorAr">0 ppm</span> 
-        <span class="card-valorSensorTxt2"> ppm</span> 
+        <span class="card-valorSensor" id="textValorAr">0 indice</span> 
+        <span class="card-valorSensorTxt2"> indice</span> 
       </div>
       <span class="card-descricao"  id="textQualidadeArStatus">Estado da Qualidade do Ar</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+     <span class="bolinha-status ligado" id="status-ar"><i></i>Ligado</span>
     </article>
 
     <!-- Chuva -->
@@ -127,7 +127,7 @@
         </div>
       </span>
       <span class="card-descricao">Chuva acumulada</span>
-      <span class="bolinha-status ligado"><i></i>Ligado</span>
+     <span class="bolinha-status ligado" id="status-chuva"><i></i>Ligado</span>
     </article>
   </section>
 
@@ -147,38 +147,38 @@
         <li>
           <span class="detalhes-sensores">Temperatura</span>
           <span class="detalhes-valorSensor" id="textTemperatura-Detalhes">0°C</span> 
-          <span class="detalhes-situacao ok"><i></i>Agradável</span> 
+          <span class="detalhes-situacao ok" id="situacao-temperatura"><i></i>Agradável</span>
            <!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
         </li>
 
         <li>
           <span class="detalhes-sensores">Pressão</span>
           <span class="detalhes-valorSensor" id="textPressao-Detalhes"> 0.0 hPa</span> <!-- Puxar do BACKEND-->
-          <span class="detalhes-situacao ok"><i></i>Normal</span>
+          <span class="detalhes-situacao ok" id="situacao-pressao"><i></i>Normal</span>
         </li>
 
         <li>
           <span class="detalhes-sensores">Umidade</span>
-          <span class="detalhes-valorSensor" id="textUmidade-Detalhes">0 %</span> 
-          <span class="detalhes-situacao ok"><i></i>Confortável</span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
+          <span class="detalhes-valorSensor" id="textUmidade-Detalhes">0 ADC</span> 
+          <span class="detalhes-situacao ok" id="situacao-umidade"><i></i>Confortável</span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
         </li>
 
         <li>
           <span class="detalhes-sensores">Luminosidade</span>
           <span class="detalhes-valorSensor" id="textLuminosidade-Detalhes">0 %</span> 
-          <span class="detalhes-situacao ok"><i></i>Claro</span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
+          <span class="detalhes-situacao ok" id="situacao-luminosidade"><i></i>Claro</span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
         </li>
 
         <li>
           <span class="detalhes-sensores">Qualidade do ar</span>
-          <span class="detalhes-valorSensor" id="textValorAr-Detalhes"> 0 ppm</span> 
-          <span class="detalhes-situacao ok" id="textQualidadeArStatus-Detalhes"><i></i>Boa</span> <!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
+          <span class="detalhes-valorSensor" id="textValorAr-Detalhes"> 0 indice</span> 
+          <span class="detalhes-situacao ok" id="situacao-ar"><i></i>Boa</span> <!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
         </li>
 
         <li>
           <span class="detalhes-sensores">Chuva</span>
           <span class="detalhes-valorSensor" id="textPrecipitacao-Detalhes">0 mm</span> 
-          <span class="detalhes-situacao ok"><i></i>Sem chuva agora</span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
+          <span class="detalhes-situacao ok" id="situacao-chuva"><i></i>Sem chuva agora </span><!-- Colocar validação para saber se ta agradavel, cuidado, ou atencao-->
         </li>
 
        

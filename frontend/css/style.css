@@ -310,6 +310,10 @@
   .painelDetalhes-resultado.ok .painelDetalhes-resultado-bolinha { 
     background: var(--verdeClaro); 
   }
+
+  .detalhes-situacao.off i {
+    background: #E5736F;
+  }
   
   /* Animação de pulso/brilho suave para as bolinhas de status ativo */
   @keyframes pulse-bolinha {
@@ -329,6 +333,14 @@
   .detalhes-situacao.ok i {
     animation: pulse-bolinha 3.0s infinite ease-in-out;
   }
+
+
+  .bolinha-status.off i,
+.detalhes-situacao.off i {
+  animation: none;
+  background: #E5736F;
+  box-shadow: 0 0 6px 2px rgba(229, 115, 111, 0.7);
+}
 
   .detalhes { 
     list-style: none; 
@@ -369,12 +381,22 @@
     background: var(--verdeClaro); 
   }
 
+  .detalhes-situacao.atencao i { 
+    background: var(--laranja); 
+  }
+
+  .detalhes-situacao.alerta i {
+     background: #E5736F;
+      box-shadow: 0 0 6px 2px rgba(229, 115, 111, 0.7); 
+    }
+
   .detalhesMapa{
      background: var(--backgroundSec);
     border: 1px solid var(--borda);
     border-radius: var(--bordaPadrao);
     padding: 20px;
   }
+
 
   
   .footer { 

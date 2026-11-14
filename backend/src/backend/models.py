@@ -11,8 +11,8 @@ class LeituraSensorModel(Base):
     umidade = Column(Float, nullable=True)
     valorAr = Column(Integer, nullable=False)
     luminosidade = Column(Float, nullable=False)
-    precipitacao = Column(Float, nullable=False)
-    pressao = Column(Float, nullable=False)
+    precipitacao = Column(Float, nullable=True)
+    pressao = Column(Float, nullable=True)
     qualidadeArStatus = Column(String(50), nullable=False) # <--- Coluna nova no banco
 
     
