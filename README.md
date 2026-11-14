@@ -1,6 +1,6 @@
 # 🌤️ Estação Meteorológica Inteligente com ESP32
 
-[![MicroPython](https://img.shields.io/badge/MicroPython-1.20%252B-blue.svg)]()
+[![MicroPython](https://img.shields.io/badge/MicroPython-1.20+-blue.svg)]()
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-%23009688.svg)]()
 [![Hardware](https://img.shields.io/badge/HARDWARE-ESP32-orange.svg)]()
 
@@ -17,6 +17,7 @@ O sistema opera de forma integrada através das seguintes etapas:
    - **MQ135:** Captura a medição analógica da concentração de gases e poluição no ar.
    - **LDR:** Identifica o nível de luminosidade para classificar o ambiente entre claro ou escuro.
    - **HC-SR04:** Executa a medição do nível de água via ultrassom para a estimativa de volume de chuva (pluviometria).
+   - **BMP280:** Realiza a leitura barométrica da pressão atmosférica (em hPa) via barramento I2C.
 2. **Validação e Processamento (Backend):** Os dados coletados pelo firmware são transmitidos via rede para a API em **FastAPI**, que recebe o payload, executa as validações de integridade e regra de negócio.
 3. **Persistência:** O backend processa as informações e utiliza o **SQLAlchemy ORM** para salvar o histórico completo das métricas coletadas no banco de dados relacional.
 4. **Visualização (Frontend):** Os dados persistidos são consumidos e exibidos em tempo real no dashboard web, permitindo o acompanhamento gráfico e visual do monitoramento ambiental.
@@ -34,6 +35,7 @@ A prototipagem física e simulada (via Wokwi) utiliza os seguintes componentes p
 | **MQ135** | Qualidade do Ar (Gases) | Entrada Analógica (ADC) |
 | **LDR** | Luminosidade | Entrada Analógica (ADC) |
 | **HC-SR04** | Ultrassônico para Pluviometria | Trigger / Echo (GPIO) |
+| **BMP280** | Pressão Atmosférica | I2C (SDA/SCL - GPIO 21/22) |
 
 ---
 
