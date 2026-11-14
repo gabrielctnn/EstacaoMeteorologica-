@@ -195,3 +195,4 @@ function resumirAmbiente(niveis) {
     }
     return { classe: "ok", titulo: "Ok", texto: "O ambiente está bom." }
 }
+

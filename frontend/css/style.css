@@ -252,10 +252,15 @@
     display: grid; 
     gap: 16px; 
     margin-top: 30px;
+    max-width: 1000px; /* deixa só esse painel mais estreito */
+    width: 100%;
+    margin-left: auto; /* centraliza ele horizontalmente */
+    margin-right: auto;
   }
 
   .linha { 
-    grid-template-columns: 1.2fr 1fr; }
+    grid-template-columns: 1fr;
+  }
 
   .painelDetalhes{ 
     display: flex; 
@@ -436,4 +441,32 @@
     color: var(--textoBaixaOpacidade); 
   }
 
+  @media (max-width: 900px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablet/tela média */
+    }
+  }
 
+  @media (max-width: 600px) {
+    .page {
+      max-width: 100%;
+      padding: 20px 16px 32px;
+    }
+
+    .cards {
+      grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+
+    .header h1 {
+      font-size: 26px;
+    }
+
+    .detalhes li {
+      grid-template-columns: 1fr auto;
+      gap: 6px 12px;
+    }
+
+    .detalhes-situacao {
+      grid-column: 1 / -1;
+    }
+  }

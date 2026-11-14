@@ -2,7 +2,7 @@ import dht  # Importa biblioteca do sensor DHT22 (já vem no MicroPython)
 from machine import Pin, ADC, time_pulse_us, I2C #importa a classe Pin, que controla os pinos GPIO do ESP32, e o ADC para o pino Analogico
 import time, network, urequests 
 import config
-#from bmp280 import BMP280 -> biblioteca pro BMP280
+from bmp280 import BMP280
 
 estacao = network.WLAN(network.STA_IF) #configura o wifi para modo de estação preparando para ligar em um router 
 estacao.active(False)
@@ -31,17 +31,17 @@ DHT = dht.DHT22(Pin(15)) # Cria o objeto do sensor, informando o modelo (DHT22) 
 MQ135 = ADC(Pin(34)) #cria a variavel que recebe os dados analogicos da porta ADC (TROCAR PARA A IGUAL DO FISICO)
 MQ135.atten(ADC.ATTN_11DB)# Atenuação de 11 dB: amplia a faixa de tensão aceita para cerca de 0 a 3,3 V. Sem isso a faixa seria bem menor (cerca de 0 a 1 V). O ADC tem 12 bits de resolução: devolve valores de 0 a 4095.
 
-LDR = ADC(Pin(32)) #(TROCAR PARA A IGUAL DO FISICO)
+LDR = ADC(Pin(32)) 
 LDR.atten(ADC.ATTN_11DB)
 
-#hcTRIG = Pin(18, Pin.OUT) #(TROCAR PARA A IGUAL DO FISICO)
-#hcECHO = Pin(19, Pin.IN)#(TROCAR PARA A IGUAL DO FISICO)
+hcTRIG = Pin(18, Pin.OUT) 
+hcECHO = Pin(19, Pin.IN)
 
-#COMANDOS PARA COLOCAR QUANDO TIVER O BMP280 EM MÃOS
+
 # Mapeia os pinos do barramento I2C do BMP280
-# i2c = I2C(0, scl=Pin(22), sda=Pin(21)) (TROCAR PARA A IGUAL DO FISICO)
+i2c = I2C(0, scl=Pin(22), sda=Pin(21)) 
 # Inicializa o sensor (Se der erro ETIMEDOUT no hardware real, alterar o addr para 0x76)
-# bmp = BMP280(i2c, addr=0x77)
+bmp = BMP280(i2c, addr=0x76)
 
 
 def calculoDistancia():
@@ -91,28 +91,32 @@ while True:
       ambiente = "CLARO"
   print(f"DADOS LDR: \nIntensidade da luz: {luminosidade} / 4095 - Ambiente: {ambiente}\n")
 
- # alturaRecipiente = 20.0 #Trocar pela altura do recipiente escolhido, no caso atual 20cm
+  alturaRecipiente = 20.0 #Trocar pela altura do recipiente escolhido, no caso atual 20cm
 
- # distancia = calculoDistancia()
-  #if distancia is not None:
- #   #A diferença é a altura da agua no recipiente que esta em CM
-   # nivelChuva = alturaRecipiente - distancia
+  distancia = calculoDistancia()
 
-    #if nivelChuva < 0: 
-     #   nivelChuva = 0.0
+  if distancia is not None:
+    #A diferença é a altura da agua no recipiente que esta em CM
+    nivelChuva = alturaRecipiente - distancia
 
-    #nivelChuva *= 10 #Converte para mm
-    #print(f"DADOS HC-SR04: \nDistância: {nivelChuva:.2f} mm\n")
-   # nivelChuva_json = nivelChuva
-  #else:
-    #print("Fora de alcance ou erro na medição\n")
-    #nivelChuva_json = None
+    if nivelChuva < 0: 
+        nivelChuva = 0.0
+
+    nivelChuva *= 10 #Converte para mm
+    print(f"DADOS HC-SR04: \nDistância: {nivelChuva:.2f} mm\n")
+    nivelChuva_json = nivelChuva
+  else:
+    print("Fora de alcance ou erro na medição\n")
+    nivelChuva_json = None
 
          
-# COMANDOS DO BMP280 NO LOOP (DESCOMENTAR NO HARDWARE FÍSICO)
-  # pressao = bmp.pressure
-  # print(f"DADOS BMP280: \nPressão Atmosférica: {pressao:.2f} hPa\n")
-
+# COMANDOS DO BMP280 
+  try: 
+    pressao = bmp.pressure / 100
+    print(f"DADOS BMP280: \nPressão Atmosférica: {pressao:.2f} hPa\n")
+  except OSError:
+    print("Erro na leitura do BMP280\n")
+    pressao = None
   #pacote JSON com os DADOS
   dadosSensores = { 
         "dispositivo_id": 1,
@@ -120,8 +124,8 @@ while True:
         "umidadeDHT": umidadeDHT,
         "valorAr": valorAr,
         "luminosidade": luminosidade,
-        "precipitacao": None, #nivelChuva_json,
-        "pressao": None #Depois colocar a variavel quando tiver no sensor fisico
+        "precipitacao": nivelChuva_json,
+        "pressao": pressao #Depois colocar a variavel quando tiver no sensor fisico
   }
     #Try/catch para envio dos dados pelo metodo POST DO HTTP
   if not estacao.isconnected():
