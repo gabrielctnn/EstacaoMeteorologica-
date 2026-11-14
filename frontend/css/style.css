@@ -83,6 +83,11 @@
     background: var(--verdeClaro); 
   }
 
+  .status-bolinha.off {
+  background: #E5736F;
+  animation: none;
+  box-shadow: 0 0 6px 2px rgba(229, 115, 111, 0.7);
+  }
   .botao-atualizar {
     display: flex;
     align-items: center;
@@ -305,6 +310,31 @@
   .painelDetalhes-resultado.ok { 
     background: #14302A; 
     border-color: #2C6B57; 
+  }
+
+  .painelDetalhes-resultado.off { 
+    background: #301414; 
+    border-color: #6b2c2c; 
+  }
+
+  .painelDetalhes-resultado.alerta {
+  background: #302314;
+  border-color: #6b572c;
+}
+
+.painelDetalhes-resultado.perigoso {
+  background: #301414;
+  border-color: #6b2c2c;
+}
+
+  .painelDetalhes-resultado.alerta .painelDetalhes-resultado-bolinha {
+    background: var(--laranja);
+  }
+
+  .painelDetalhes-resultado.perigoso .painelDetalhes-resultado-bolinha,
+  .painelDetalhes-resultado.off .painelDetalhes-resultado-bolinha {
+    background: #E5736F;
+    box-shadow: 0 0 6px 2px rgba(229, 115, 111, 0.7);
   }
 
   .painelDetalhes-resultado.ok .painelDetalhes-resultado-bolinha { 
