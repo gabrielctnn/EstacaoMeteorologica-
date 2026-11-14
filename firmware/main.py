@@ -125,7 +125,7 @@ while True:
         "valorAr": valorAr,
         "luminosidade": luminosidade,
         "precipitacao": nivelChuva_json,
-        "pressao": pressao #Depois colocar a variavel quando tiver no sensor fisico
+        "pressao": pressao 
   }
     #Try/catch para envio dos dados pelo metodo POST DO HTTP
   if not estacao.isconnected():
