@@ -14,6 +14,12 @@ async function puxarDados(){
             document.getElementById("resumoAmbiente").className = "painelDetalhes-resultado off"
             document.getElementById("resumoTitulo").innerText = "Estação offline"
             document.getElementById("resumoTexto").innerText = "Sem previsão do ambiente."
+
+            ["temperatura","pressao","umidade","luminosidade","ar","chuva"].forEach(s => {
+            const el = document.getElementById("status-" + s)
+            el.className = "bolinha-status off"
+            el.innerHTML = "<i></i>Sem sinal"
+        })
         }
         console.log(leitura)
     } catch(erro){
